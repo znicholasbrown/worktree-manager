@@ -10,6 +10,41 @@ A VS Code extension for managing Git worktrees directly from the editor.
 - 🗑️ **Remove worktrees** safely
 - 🎯 **Visual indicators** showing your current worktree
 
+## Installation
+
+### Option 1: Install from .vsix (Recommended)
+
+1. Download the latest `.vsix` file from the [releases](https://github.com/znicholasbrown/worktree-manager/releases)
+   
+   Or build it yourself:
+   ```bash
+   npm install
+   npm run package
+   ```
+
+2. Install in VS Code:
+   - Open VS Code
+   - Go to Extensions view (`Cmd+Shift+X`)
+   - Click the "..." menu → "Install from VSIX..."
+   - Select `worktree-manager-0.0.1.vsix`
+
+### Option 2: Development Mode
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/znicholasbrown/worktree-manager.git
+   cd worktree-manager
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run in development mode:
+   - Press `F5` in VS Code
+   - The extension will load in a new Extension Development Host window
+
 ## Getting Started
 
 ### Development
@@ -27,6 +62,12 @@ A VS Code extension for managing Git worktrees directly from the editor.
 3. Run in development mode:
    - Press `F5` in VS Code to open the Extension Development Host
    - The extension will be loaded automatically
+
+4. Package for distribution:
+   ```bash
+   npm run package
+   ```
+   This creates a `worktree-manager-0.0.1.vsix` file that can be installed locally.
 
 ### Usage
 

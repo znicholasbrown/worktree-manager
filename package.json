@@ -4,6 +4,11 @@
     "description": "Manage Git worktrees directly from VS Code",
     "version": "0.0.1",
     "publisher": "znicholasbrown",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/znicholasbrown/worktree-manager"
+    },
     "engines": {
         "vscode": "^1.85.0"
     },
@@ -98,13 +103,15 @@
         "watch": "node esbuild.js --watch",
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts",
-        "pretest": "npm run compile && npm run lint"
+        "pretest": "npm run compile && npm run lint",
+        "package": "vsce package"
     },
     "devDependencies": {
         "@types/node": "^20.x",
         "@types/vscode": "^1.85.0",
         "@typescript-eslint/eslint-plugin": "^6.x",
         "@typescript-eslint/parser": "^6.x",
+        "@vscode/vsce": "^3.7.0",
         "esbuild": "^0.19.x",
         "eslint": "^8.x",
         "typescript": "^5.3.x"
