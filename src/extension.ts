@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { WorktreeProvider } from './worktreeProvider.js';
+import { WorktreeProvider } from './worktreeProvider';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Worktree Manager extension is now active');
@@ -61,6 +61,14 @@ export function activate(context: vscode.ExtensionContext) {
                 if (confirm === 'Remove') {
                     await worktreeProvider.removeWorktree(item.path);
                 }
+            }
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('worktree-manager.switchBranch', async (item) => {
+            if (item && item.worktreePath && item.name) {
+                await worktreeProvider.switchBranch(item.worktreePath, item.name);
             }
         })
     );

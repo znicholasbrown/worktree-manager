@@ -19,19 +19,28 @@
         "commands": [
             {
                 "command": "worktree-manager.listWorktrees",
-                "title": "Worktree: List Worktrees"
+                "title": "Worktree: List Worktrees",
+                "icon": "$(refresh)"
             },
             {
                 "command": "worktree-manager.createWorktree",
-                "title": "Worktree: Create New Worktree"
+                "title": "Worktree: Create New Worktree",
+                "icon": "$(add)"
             },
             {
                 "command": "worktree-manager.switchWorktree",
-                "title": "Worktree: Switch to Worktree"
+                "title": "Worktree: Switch to Worktree",
+                "icon": "$(folder-opened)"
             },
             {
                 "command": "worktree-manager.removeWorktree",
-                "title": "Worktree: Remove Worktree"
+                "title": "Worktree: Remove Worktree",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "worktree-manager.switchBranch",
+                "title": "Worktree: Switch Branch",
+                "icon": "$(git-branch)"
             }
         ],
         "viewsContainers": {
@@ -48,6 +57,37 @@
                 {
                     "id": "worktreeList",
                     "name": "Worktrees"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "worktree-manager.createWorktree",
+                    "when": "view == worktreeList",
+                    "group": "navigation"
+                },
+                {
+                    "command": "worktree-manager.listWorktrees",
+                    "when": "view == worktreeList",
+                    "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "worktree-manager.switchWorktree",
+                    "when": "view == worktreeList && viewItem == worktree",
+                    "group": "inline"
+                },
+                {
+                    "command": "worktree-manager.removeWorktree",
+                    "when": "view == worktreeList && viewItem == worktree",
+                    "group": "worktree"
+                },
+                {
+                    "command": "worktree-manager.switchBranch",
+                    "when": "view == worktreeList && viewItem == branch",
+                    "group": "inline"
                 }
             ]
         }
