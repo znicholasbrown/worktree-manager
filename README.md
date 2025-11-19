@@ -2,6 +2,12 @@
 
 A VS Code extension for managing Git worktrees directly from the editor.
 
+
+
+https://github.com/user-attachments/assets/fccb8772-0d35-4695-9d28-819f27653a7f
+
+
+
 ## Features
 
 - 📋 **View all worktrees** in a dedicated sidebar
