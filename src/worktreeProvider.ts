@@ -335,8 +335,55 @@ export class WorktreeProvider implements vscode.TreeDataProvider<TreeNode> {
     }
 
     async switchToWorktree(path: string): Promise<void> {
-        const uri = vscode.Uri.file(path);
-        await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+
+        if (!workspaceFolders || workspaceFolders.length === 0) {
+            // No workspace, just open the folder
+            const uri = vscode.Uri.file(path);
+            await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+            return;
+        }
+
+        // Find which workspace folder contains a worktree from the same repository
+        // We need to find the repository that this worktree belongs to
+        let targetFolderIndex = -1;
+        let repositoryPath = '';
+
+        for (let i = 0; i < workspaceFolders.length; i++) {
+            const folder = workspaceFolders[i];
+            try {
+                // Get worktrees for this folder's repository
+                const worktrees = await this.getWorktrees(folder.uri.fsPath);
+
+                // Check if the target path is one of the worktrees
+                if (worktrees.some(wt => wt.path === path)) {
+                    targetFolderIndex = i;
+                    repositoryPath = folder.uri.fsPath;
+                    break;
+                }
+            } catch (error) {
+                // Not a git repo or error, continue
+            }
+        }
+
+        if (targetFolderIndex === -1) {
+            // Couldn't find the repository, fall back to opening in new window
+            vscode.window.showWarningMessage('Could not find repository for this worktree');
+            return;
+        }
+
+        // Replace the workspace folder at the found index
+        const newUri = vscode.Uri.file(path);
+        const folderName = await this.getRepositoryName(path);
+
+        vscode.workspace.updateWorkspaceFolders(
+            targetFolderIndex, // start index
+            1, // delete count (remove the old folder)
+            { uri: newUri, name: folderName } // add the new folder
+        );
+
+        vscode.window.showInformationMessage(`Switched to worktree: ${path}`);
+        this.refresh();
     }
 
     async removeWorktree(path: string): Promise<void> {
@@ -350,10 +397,10 @@ export class WorktreeProvider implements vscode.TreeDataProvider<TreeNode> {
                 cwd: workspaceFolder.uri.fsPath
             });
 
-            vscode.window.showInformationMessage(`Removed worktree at ${path}`);
+            vscode.window.showInformationMessage(`Removed worktree at ${path} `);
             this.refresh();
         } catch (error) {
-            vscode.window.showErrorMessage(`Failed to remove worktree: ${error}`);
+            vscode.window.showErrorMessage(`Failed to remove worktree: ${error} `);
         }
     }
 }
